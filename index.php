@@ -13,6 +13,7 @@
       }
     </style>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyC0LHMYC4pQmrIYw8PMT-oSHbJJyoMOAKY"></script>
+
     <script>
 		function initialize() {
 		  var center = new google.maps.LatLng(42.289397, -82.989836);
@@ -21,8 +22,7 @@
 		    zoom: 12,
 		    center: center,
 		    disableDefaultUI: true,
-		    scroolwheel:false
-
+		    scrollwheel:false
 		  }
 		  
 		  var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
@@ -130,25 +130,60 @@
   </head>
 
   <body ng-app="comhub">
-			<div ng-controller="AppCtrl" layout="column" style="padding-bottom: 15px;">
-	  	<div layout="column" layout-fill style="padding-bottom: 32px;">
 
+			<div ng-controller="AppCtrl" style="padding-bottom: 15px;">
+	  	
+	  	<div layout-fill style="padding-bottom: 32px;">
 					<md-toolbar class="md-default-theme">
 					<md-whiteframe class="md-whiteframe-z2">
 						<h2>Com Hub</h2>
 					</md-whiteframe>
 					</md-toolbar>
+			</div>
 
-	  	</div>	
 			<md-content layout-padding style="height: 600px;padding: 24px;">
 				<div id="panel">
 		      <!-- <input onclick="clearMarkers();" type=button value="Hide Markers"> -->
 		      <!-- <input onclick="showMarkers();" type=button value="Show All Markers"> -->
-		      <input onclick="deleteMarkers();" type=button value="Delete Markers">
+		      <md-button onclick="deleteMarkers()" class="md-primary">
+		      Delete User Markers
+		      </md-button>
+
+		      <md-button ng-click="toggleRight()"
+	        class="md-primary">
+	        Toggle right
+	      	</md-button>
 		    </div>
+	  		
 	  		<div id="map-canvas"></div>
-			</md-content>
+	  	</md-content>
+
+	  	<div flex></div>
+    		</md-content>
+			    <md-sidenav class="md-sidenav-right md-whiteframe-z2" md-component-id="right">
+			      <md-toolbar class="md-theme-light">
+			        <h1 class="md-toolbar-tools">Sidenav Right</h1>
+			      </md-toolbar>
+			      <md-content ng-controller="RightCtrl" layout-padding>
+			        <form>
+			          <md-input-container>
+			            <label for="testInput">Test input</label>
+			            <input type="text" id="testInput"
+			                   ng-model="data" md-sidenav-focus>
+			          </md-input-container>
+			        </form>
+			        <md-button ng-click="close()" class="md-primary">
+			          Close Sidenav Right
+			        </md-button>
+			  </md-content>
+			    </md-sidenav>
+			  </section>
 			</div>
+			
+
+			</div>
+
+
 	    
 
   <script src="/bower_components/angular/angular.js"></script>
@@ -161,7 +196,48 @@
 
 		angular.module( 'comhub', [ 'ngMaterial' ] )
 			.controller("AppCtrl", function($scope){} );
-		angular.module('whiteframeBasicUsage', ['ngMaterial']);
+		angular.module('whiteframeBasicUsage', ['ngMaterial'])
+
+		
+		
+		angular
+  .module('comhub', ['ngMaterial'])
+  .controller('AppCtrl', function ($scope, $timeout, $mdSidenav, $mdUtil, $log) {
+    $scope.toggleLeft = buildToggler('left');
+    $scope.toggleRight = buildToggler('right');
+    /**
+     * Build handler to open/close a SideNav; when animation finishes
+     * report completion in console
+     */
+    function buildToggler(navID) {
+      var debounceFn =  $mdUtil.debounce(function(){
+            $mdSidenav(navID)
+              .toggle()
+              .then(function () {
+                $log.debug("toggle " + navID + " is done");
+              });
+          },300);
+      return debounceFn;
+    }
+  })
+  .controller('LeftCtrl', function ($scope, $timeout, $mdSidenav, $log) {
+    $scope.close = function () {
+      $mdSidenav('left').close()
+        .then(function () {
+          $log.debug("close LEFT is done");
+        });
+    };
+  })
+  .controller('RightCtrl', function ($scope, $timeout, $mdSidenav, $log) {
+    $scope.close = function () {
+      $mdSidenav('right').close()
+        .then(function () {
+          $log.debug("close RIGHT is done");
+        });
+    };
+  });
+
+
 	</script>
 
 </body>
