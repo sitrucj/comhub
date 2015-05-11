@@ -12,7 +12,7 @@
         padding: 0px
       }
     </style>
-    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyC0LHMYC4pQmrIYw8PMT-oSHbJJyoMOAKY"></script>
     <script>
 		function initialize() {
 		  var center = new google.maps.LatLng(42.289397, -82.989836);
@@ -20,7 +20,9 @@
 		  var mapOptions = {
 		    zoom: 12,
 		    center: center,
-		    disableDefaultUI: true
+		    disableDefaultUI: true,
+		    scroolwheel:false
+
 		  }
 		  
 		  var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
@@ -47,10 +49,50 @@
 	          bindInfoWindow(marker, map, infoWindow, html);
 	        }
 	      });
+
+	      		  // This event listener will call addMarker() when the map is clicked.
+  			google.maps.event.addListener(map, 'click', function(event) {
+   				addMarker(event.latLng);
+  			});
+
+ 		// Add a marker to the map and push to the array.
+		function addMarker(location) {
+		  var marker = new google.maps.Marker({
+		    position: location,
+		    map: map
+		  });
+		  userMarkers.push(marker);
+		}
 		
 		}
 
 		google.maps.event.addDomListener(window, 'load', initialize);
+		var userMarkers=[];
+
+	
+
+		// Sets the map on all markers in the array.
+		function setAllMap(map) {
+		  for (var i = 0; i < userMarkers.length; i++) {
+		    userMarkers[i].setMap(map);
+		  }
+		}
+
+		// Removes the userMarkers from the map, but keeps them in the array.
+		function clearMarkers() {
+		  setAllMap(null);
+		}
+
+		// Shows any userMarkers currently in the array.
+		function showMarkers() {
+		  setAllMap(map);
+		}
+
+		// Deletes all userMarkers in the array by removing references to them.
+		function deleteMarkers() {
+		  clearMarkers();
+		  userMarkers = [];
+		}
   
     //<![CDATA[
 
@@ -99,6 +141,11 @@
 
 	  	</div>	
 			<md-content layout-padding style="height: 600px;padding: 24px;">
+				<div id="panel">
+		      <!-- <input onclick="clearMarkers();" type=button value="Hide Markers"> -->
+		      <!-- <input onclick="showMarkers();" type=button value="Show All Markers"> -->
+		      <input onclick="deleteMarkers();" type=button value="Delete Markers">
+		    </div>
 	  		<div id="map-canvas"></div>
 			</md-content>
 			</div>
