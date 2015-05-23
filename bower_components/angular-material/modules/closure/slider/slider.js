@@ -2,10 +2,13 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0
+ * v0.8.3
  */
 goog.provide('ng.material.components.slider');
 goog.require('ng.material.core');
+(function() {
+  'use strict';
+
   /**
    * @ngdoc module
    * @name material.components.slider
@@ -398,4 +401,4 @@ function SliderDirective($$rAF, $window, $mdAria, $mdUtil, $mdConstant, $mdThemi
 }
 SliderDirective.$inject = ["$$rAF", "$window", "$mdAria", "$mdUtil", "$mdConstant", "$mdTheming", "$mdGesture", "$parse"];
 
-ng.material.components.slider = angular.module("material.components.slider");
+})();

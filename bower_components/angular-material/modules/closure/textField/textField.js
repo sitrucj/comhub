@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v0.9.0-rc1-master-3c0ce9b
+ * v0.8.3
  */
 goog.provide('ng.material.components.textField');
 goog.require('ng.material.core');
@@ -15,7 +15,7 @@ goog.require('ng.material.core');
  * @description
  * Form
  */
-ng.material.components.textField = angular.module('material.components.textField', [
+angular.module('material.components.textField', [
   'material.core'
 ])
   .directive('mdInputGroup', mdInputGroupDirective)
