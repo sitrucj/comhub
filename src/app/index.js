@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('comhub', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngResource', 'ui.router', 'ngMaterial'])
+angular.module('comhub', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngResource', 'ui.router', 'ngMaterial', 'openlayers-directive'])
   .config(function ($stateProvider, $urlRouterProvider) {
     $stateProvider
       .state('home', {
