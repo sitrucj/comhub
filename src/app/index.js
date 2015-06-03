@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('comhub', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ngResource', 'ui.router', 'ngMaterial', 'openlayers-directive'])
-  .config(function ($stateProvider, $urlRouterProvider) {
+  .config(function ($stateProvider, $urlRouterProvider,$mdThemingProvider) {
     $stateProvider
       .state('home', {
         url: '/',
@@ -10,5 +10,10 @@ angular.module('comhub', ['ngAnimate', 'ngCookies', 'ngTouch', 'ngSanitize', 'ng
       });
 
     $urlRouterProvider.otherwise('/');
+ 	  
+ 	  $mdThemingProvider.theme('default')
+  	  .primaryPalette('indigo')
+    	.accentPalette('green');
   })
 ;
+
