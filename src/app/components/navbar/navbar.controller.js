@@ -1,6 +1,6 @@
 'use strict';
 
 angular.module('comhub')
-.controller('NavbarCtrl', function ($scope) {
-  
-});
+	.controller('NavbarCtrl', function ($scope) {
+	  
+	});

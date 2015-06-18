@@ -1,11 +1,10 @@
 <md-toolbar layout="row" layout-align="center center" ng-controller="NavbarCtrl">
 
-  <md-button href="#">Community Hub</md-button>
+ <md-button ui-sref="home">Community Hub</md-button>
 
- <section flex layout="row" layout-align="right right">
-    <md-button href="#" class="md-raised">Home</md-button>
-    <md-button href="#" class="md-raised">About</md-button>
-    <md-button href="#" class="md-raised">Contact</md-button>
+ <section flex layout="row" layout-align="end center">
+    <md-button ui-sref="register" class="md-accent md-raised">Register</md-button>
+    <md-button ui-sref="contact" class="md-accent md-raised">Contact</md-button>
   </section>
 
 
