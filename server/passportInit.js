@@ -98,9 +98,9 @@ module.exports = function(passport){
 
 
             
-            console.log(users[username].username + ' Registration successful');
-            console.log('with password hash ' + users[username].password);
-            return done(null, users[username]);
+            console.log(newUser.username + ' Registration successful');
+            console.log('with password hash ' + newUser.password);
+            return done(null, newUser);
         })
     );
     

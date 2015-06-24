@@ -31,6 +31,7 @@ router.route('/markers')
 	.post(function(req, res){
 		
 		var marker = new Marker();
+				marker.title = req.body.title;
         marker.text = req.body.text;
         marker.created_by = req.body.created_by;
         marker.save(function(err, marker) {
