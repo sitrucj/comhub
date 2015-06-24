@@ -1,5 +1,7 @@
 var express = require('express');
 var router = express.Router();
+var mongoose = require( 'mongoose' );
+var Marker = mongoose.model('Marker');
 
 //Used for routes that must be authenticated.
 function isAuthenticated (req, res, next) {
@@ -25,33 +27,64 @@ router.use('/markers', isAuthenticated);
 //api for all markers
 router.route('/markers')
 	
-	//create a new post
+	//create a new marker
 	.post(function(req, res){
-
-		//TODO create a new post in the database
-		res.send({message:"TODO create a new post in the database"});
+		
+		var marker = new Marker();
+        marker.text = req.body.text;
+        marker.created_by = req.body.created_by;
+        marker.save(function(err, marker) {
+            if (err){
+                return res.send(500, err);
+            }
+            return res.json(marker);
+        });
 	})
-
+	// get all markers
 	.get(function(req, res){
-
-		//TODO get all the markers in the database
-		res.send({message:"TODO get all the markers in the database"});
+		Marker.find(function(err, markers){
+			if(err){
+			    return res.send(500, err);
+			}
+			return res.send(200,markers);
+    });
 	})
 
-//api for a specfic post
+//api for a specfic marker
 router.route('/markers/:id')
 	
 	//create
 	.put(function(req,res){
-		return res.send({message:'TODO modify an existing post by using param ' + req.param.id});
+		return res.send({message:'TODO modify an existing marker by using param ' + req.param.id});
 	})
 
-	.get(function(req,res){
-		return res.send({message:'TODO get an existing post by using param ' + req.param.id});
+	//updates specified marker
+	.put(function(req, res){
+		Marker.findById(req.params.id, function(err, marker){
+			if(err)
+				res.send(err);
+
+			marker.created_by = req.body.created_by;
+			marker.text = req.body.text;
+
+			marker.save(function(err, marker){
+				if(err)
+					res.send(err);
+
+				res.json(marker);
+			});
+		});
 	})
 
-	.delete(function(req,res){
-		return res.send({message:'TODO delete an existing post by using param ' + req.param.id})
+	//deletes the marker
+	.delete(function(req, res) {
+		Marker.remove({
+			_id: req.params.id
+		}, function(err) {
+			if (err)
+				res.send(err);
+			res.json("deleted :(");
+		});
 	});
 
 module.exports = router;
