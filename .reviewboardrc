@@ -1,0 +1,5 @@
+REVIEWBOARD_URL = "http://badlands.me/reviewboard"
+REPOSITORY = "comhub"
+BRANCH = "master"
+LAND_DEST_BRANCH = "master"
+
