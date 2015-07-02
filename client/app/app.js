@@ -7,7 +7,8 @@ angular.module('comhubApp', [
   'btford.socket-io',
   'ui.router',
   'ngMaterial',
-  'openlayers-directive'
+  'openlayers-directive',
+  'ngMessages'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider

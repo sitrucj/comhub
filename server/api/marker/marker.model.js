@@ -6,9 +6,15 @@ var mongoose = require('mongoose'),
 var MarkerSchema = new Schema({
 	title: String,
 	text: String,
-	username: { type: Schema.ObjectId, ref: 'User' },
-	lat: {type: Number, default: 0},
-	lon: {type: Number, default: 0},
+	loc: {
+		type: Schema.ObjectId,
+		ref: 'Point'
+	},
+	Creator:
+	{
+  	type: Schema.ObjectId,
+  	ref: 'User'
+  },
 	created_at: {type: Date, default: Date.now}
 });
 
