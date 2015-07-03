@@ -1,7 +1,14 @@
 <!-- <div ng-include="'components/navbar/navbar.html'"></div> -->
-
 <div ng-controller="MapCtrl">
-	<openlayers id="map" ol-center="windsor" >
-		<!-- <ol-control name="fullscreen"></ol-control> -->
+	<openlayers  ol-center="windsor" ol-defaults="defaults" height=400>
+		<ol-marker ng-repeat="marker in markers" lat="marker.lat" lon="marker.lon"></ol-marker>
 	</openlayers>
+	
+	<div class="tmp">
+		<h5>Mouse position</h5>
+	  <pre ng-bind="mouseposition | json"></pre>
+	  <h5>Mouse click position</h5>
+	  <pre ng-bind="mouseclickposition | json"></pre>
+	</div>
+	
 </div>

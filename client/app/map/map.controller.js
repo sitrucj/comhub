@@ -12,12 +12,51 @@ angular.module('comhubApp')
 				lat: 54.063408,
 			  lon: -101.910305,
 				zoom: 3
-			}
+			},
+			defaults: {
+        events: {
+            map: [ 'singleclick', 'pointermove' ]
+        }
+      },
+      mouseposition: {},
+      mouseclickposition: {},
+      projection: 'EPSG:4326'
 		});
 		
-		updatePosition();
+		// updatePosition();
+		
+		$scope.$on('openlayers.map.pointermove', function(event, data) {
+        $scope.$apply(function() {
+            if ($scope.projection === data.projection) {
+                $scope.mouseposition = data.coord;
+            } else {
+                var p = ol.proj.transform([ data.coord[0], data.coord[1] ], data.projection, $scope.projection);
+                $scope.mouseposition = {
+                    lat: p[1],
+                    lon: p[0],
+                    projection: $scope.projection
+                }
+            }
+        });
+    });
 
+		$scope.$on('openlayers.map.singleclick', function(event, data) {
+    	  $scope.$apply(function() {
+            if ($scope.projection === data.projection) {
+                $scope.mouseclickposition = data.coord;
+            } else {
+                var p = ol.proj.transform([ data.coord[0], data.coord[1] ], data.projection, $scope.projection);
+                $scope.mouseclickposition = {
+                    lat: p[1],
+                    lon: p[0],
+                    projection: $scope.projection
+                }
+            }
+        });
+    });
 
+		
+// Other Functions------------------------------------------------------
 		function updatePosition () 
 		// update user positioin
 		{
