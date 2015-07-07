@@ -1,7 +1,9 @@
 'use strict';
 
+// .controller('MapCtrl', [ '$scope', '$mdDialog', function ($scope, $mdDialog) {
+
 angular.module('comhubApp')
-	.controller('MapCtrl', [ '$scope', function ($scope) {
+	.controller('MapCtrl', [ '$scope', '$mdDialog', function ($scope, $mdDialog) {
 		angular.extend($scope, {
 			windsor: { 
 				lat: 42.300095327770569,
@@ -51,9 +53,33 @@ angular.module('comhubApp')
                     lon: p[0],
                     projection: $scope.projection
                 }
+                $scope.showAddMarker(event);
             }
         });
     });
+
+	$scope.showAddMarker = function(ev)  {
+	  $mdDialog.show({
+	    // templateUrl: '../addMarker/addMarker.html',
+	    template: '<md-dialog><add-marker></add-marker></md-dialog>',
+	    parent: angular.element(document.body),
+	    targetEvent: ev,
+	    locals: {point: $scope.mouseclickposition }
+	  })
+	  // .then(function(answer) {
+	  //    $scope.alert = 'You said the information was "' + answer + '".';
+	  //  }, function() {
+	  //    $scope.alert = 'You cancelled the dialog.';
+	  //  });
+	};
+
+	
+
+  $scope.closeDialog = function() {
+    // Easily hides most recent dialog shown...
+    // no specific instance reference is needed.
+    $mdDialog.hide();
+  };
 
 		
 // Other Functions------------------------------------------------------

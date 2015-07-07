@@ -1,4 +1,12 @@
-
+<md-toolbar>
+  <div class="md-toolbar-tools">
+    <h2>Add a Marker</h2>
+    <span flex></span>
+    <md-button class="md-icon-button" >
+      <md-icon md-svg-src="assets/images/icons/close24.svg" aria-label="Close dialog"></md-icon>
+    </md-button>
+  </div>
+</md-toolbar>
 <form name="Add Marker">
   <md-input-container>
     <label>Title</label>
@@ -8,6 +16,7 @@
       <div ng-message="md-maxlength">That's too long!</div>
     </div>
   </md-input-container>
+
   <md-input-container>
     <label>Details</label>
     <textarea name="\details" ng-model="marker.details" required md-maxlength="512"></textarea>
@@ -16,5 +25,6 @@
       <div ng-message="md-maxlength">That's too long!</div>
     </div>
   </md-input-container>
+
+  <md-button class="md-primary md-raised"> Submit </md-button>
 </form>
-<md-button> Submit </md-button>
