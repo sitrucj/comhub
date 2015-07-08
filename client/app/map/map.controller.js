@@ -3,7 +3,13 @@
 // .controller('MapCtrl', [ '$scope', '$mdDialog', function ($scope, $mdDialog) {
 
 angular.module('comhubApp')
-	.controller('MapCtrl', [ '$scope', '$mdDialog', function ($scope, $mdDialog) {
+	.controller('MapCtrl', [
+		'$scope', 
+		'$mdDialog',
+		'$http',
+		'socket',
+		function ($scope, $mdDialog, $http, socket) {
+
 		angular.extend($scope, {
 			windsor: { 
 				lat: 42.300095327770569,
@@ -22,41 +28,71 @@ angular.module('comhubApp')
       },
       mouseposition: {},
       mouseclickposition: {},
+
       projection: 'EPSG:4326'
 		});
 		
-		// updatePosition();
-		
-		$scope.$on('openlayers.map.pointermove', function(event, data) {
-        $scope.$apply(function() {
-            if ($scope.projection === data.projection) {
-                $scope.mouseposition = data.coord;
-            } else {
-                var p = ol.proj.transform([ data.coord[0], data.coord[1] ], data.projection, $scope.projection);
-                $scope.mouseposition = {
-                    lat: p[1],
-                    lon: p[0],
-                    projection: $scope.projection
-                }
-            }
-        });
-    });
+	$scope.markers = [];
+	$scope.newMarker = undefined;
+  
+  $scope.clearValue = function() {
+    $scope.newMarker = undefined;
+  };
 
-		$scope.$on('openlayers.map.singleclick', function(event, data) {
-    	  $scope.$apply(function() {
-            if ($scope.projection === data.projection) {
-                $scope.mouseclickposition = data.coord;
-            } else {
-                var p = ol.proj.transform([ data.coord[0], data.coord[1] ], data.projection, $scope.projection);
-                $scope.mouseclickposition = {
-                    lat: p[1],
-                    lon: p[0],
-                    projection: $scope.projection
-                }
-                $scope.showAddMarker(event);
-            }
-        });
-    });
+  $http.get('/api/markers').success(function(markers) {
+    $scope.markers = markers;
+    socket.syncUpdates('marker', $scope.markers);
+  });
+  
+  $scope.addMarker = function() {
+    alert('Form was valid!');
+    // if($scope.newMarker === '') {
+    //   return;
+    // }
+    // $http.post('/api/markers', { name: $scope.newMarker });
+    // $scope.newMarker = '';
+  };
+
+  $scope.deleteMarker= function(marker) {
+    $http.delete('/api/markers/' + marker._id);
+  };
+
+  $scope.$on('$destroy', function () {
+    socket.unsyncUpdates('marker');
+  });
+
+
+
+	$scope.$on('openlayers.map.pointermove', function(event, data) {
+      $scope.$apply(function() {
+          if ($scope.projection === data.projection) {
+              $scope.mouseposition = data.coord;
+          } else {
+              var p = ol.proj.transform([ data.coord[0], data.coord[1] ], data.projection, $scope.projection);
+              $scope.mouseposition = {
+                  lat: p[1],
+                  lon: p[0],
+                  projection: $scope.projection
+              }
+          }
+      });
+  });
+
+	$scope.$on('openlayers.map.singleclick', function(event, data) {
+  	  $scope.$apply(function() {
+          if ($scope.projection === data.projection) {
+              $scope.mouseclickposition = data.coord;
+          } else {
+              var p = ol.proj.transform([ data.coord[0], data.coord[1] ], data.projection, $scope.projection);
+              $scope.mouseclickposition = {
+                  lat: p[1],
+                  lon: p[0],
+                  projection: $scope.projection
+              }
+              $scope.showAddMarker(event);
+          }
+      });
+  });
 
 	$scope.showAddMarker = function(ev)  {
 	  $mdDialog.show({
@@ -65,12 +101,9 @@ angular.module('comhubApp')
 	    parent: angular.element(document.body),
 	    targetEvent: ev,
 	    locals: {point: $scope.mouseclickposition }
-	  })
-	  // .then(function(answer) {
-	  //    $scope.alert = 'You said the information was "' + answer + '".';
-	  //  }, function() {
-	  //    $scope.alert = 'You cancelled the dialog.';
-	  //  });
+	  }).then(function() {
+	     $scope.alert = 'You cancelled the dialog.';
+	   });
 	};
 
 	

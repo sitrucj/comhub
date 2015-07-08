@@ -6,16 +6,12 @@ var mongoose = require('mongoose'),
 var MarkerSchema = new Schema({
 	title: String,
 	text: String,
-	loc: {
-		type: Schema.ObjectId,
-		ref: 'Point'
-	},
-	Creator:
-	{
-  	type: Schema.ObjectId,
-  	ref: 'User'
-  },
+	lat: Number,
+	lon: Number,
+	user: String,
+	User: String,
 	created_at: {type: Date, default: Date.now}
 });
 
 module.exports = mongoose.model('Marker', MarkerSchema);
+

@@ -1,30 +1,29 @@
+<div ng-controller="AddMarkerCtrl" layout=column>
+
 <md-toolbar>
   <div class="md-toolbar-tools">
     <h2>Add a Marker</h2>
     <span flex></span>
-    <md-button class="md-icon-button" >
-      <md-icon md-svg-src="assets/images/icons/close24.svg" aria-label="Close dialog"></md-icon>
+    <md-button class="md-icon-button" ng-click="answer('not applicable')">
+      <md-icon md-svg-src="assets/images/icons/close24.svg" aria-label="Close dialog" ></md-icon>
     </md-button>
   </div>
 </md-toolbar>
-<form name="Add Marker">
+  
+<form name="addMarkerForm">
   <md-input-container>
     <label>Title</label>
-    <input name="title" ng-model="marker.title" required md-maxlength="50">
-    <div ng-messages="userForm.title.$error" ng-show="userForm.title.$dirty">
-      <div ng-message="required">This is required!</div>
-      <div ng-message="md-maxlength">That's too long!</div>
-    </div>
+    <input type="text" data-ng-model="newMarker.Title" required="true">
   </md-input-container>
 
   <md-input-container>
-    <label>Details</label>
-    <textarea name="\details" ng-model="marker.details" required md-maxlength="512"></textarea>
-    <div ng-messages="userForm.\details.$error" ng-show="userForm.\details.$dirty">
-      <div ng-message="required">This is required!</div>
-      <div ng-message="md-maxlength">That's too long!</div>
+    <label>Description</label>
+    <input md-maxlength="300" required name="description" ng-model="newMarker.description">
+    <div ng-messages="addMarkerForm.description.$error" >
+      <div ng-message="md-maxlength">The name has to be less than 300 characters long.</div>
     </div>
   </md-input-container>
 
-  <md-button class="md-primary md-raised"> Submit </md-button>
 </form>
+  <md-button ng-click="addMarker()" ng-disabled="addMarkerForm.$invalid" class="md-primary" layout layout-align="center end">Save</md-button>
+</div>
