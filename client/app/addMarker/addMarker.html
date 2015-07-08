@@ -9,16 +9,16 @@
     </md-button>
   </div>
 </md-toolbar>
-  
+
 <form name="addMarkerForm">
   <md-input-container>
     <label>Title</label>
-    <input type="text" data-ng-model="newMarker.Title" required="true">
+    <input type="text" required data-ng-model="newMarker.title" >
   </md-input-container>
 
   <md-input-container>
     <label>Description</label>
-    <input md-maxlength="300" required name="description" ng-model="newMarker.description">
+    <input md-maxlength="300" required ng-model="newMarker.description">
     <div ng-messages="addMarkerForm.description.$error" >
       <div ng-message="md-maxlength">The name has to be less than 300 characters long.</div>
     </div>

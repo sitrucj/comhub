@@ -1,14 +1,13 @@
 'use strict';
 
-// .controller('MapCtrl', [ '$scope', '$mdDialog', function ($scope, $mdDialog) {
-
 angular.module('comhubApp')
 	.controller('MapCtrl', [
 		'$scope', 
 		'$mdDialog',
 		'$http',
 		'socket',
-		function ($scope, $mdDialog, $http, socket) {
+		'markerService',
+		function ($scope, $mdDialog, $http, socket, markerService) {
 
 		angular.extend($scope, {
 			windsor: { 
@@ -32,35 +31,23 @@ angular.module('comhubApp')
       projection: 'EPSG:4326'
 		});
 
-	$scope.$on('openlayers.map.pointermove', function(event, data) {
-      $scope.$apply(function() {
-          if ($scope.projection === data.projection) {
-              $scope.mouseposition = data.coord;
-          } else {
-              var p = ol.proj.transform([ data.coord[0], data.coord[1] ], data.projection, $scope.projection);
-              $scope.mouseposition = {
-                  lat: p[1],
-                  lon: p[0],
-                  projection: $scope.projection
-              }
-          }
-      });
-  });
-
 	$scope.$on('openlayers.map.singleclick', function(event, data) {
-  	  $scope.$apply(function() {
-          if ($scope.projection === data.projection) {
-              $scope.mouseclickposition = data.coord;
-          } else {
-              var p = ol.proj.transform([ data.coord[0], data.coord[1] ], data.projection, $scope.projection);
-              $scope.mouseclickposition = {
-                  lat: p[1],
-                  lon: p[0],
-                  projection: $scope.projection
-              }
-              $scope.showAddMarker(event);
+	  $scope.$apply(function() {
+        if ($scope.projection === data.projection) {
+        	$scope.mouseclickposition = data.coord;
+        } else {
+          var p = ol.proj.transform([ data.coord[0], data.coord[1] ], data.projection, $scope.projection);
+          $scope.mouseclickposition = {
+              lat: p[1],
+              lon: p[0],
+              projection: $scope.projection
           }
-      });
+          //set service for global
+          markerService.setLat($scope.mouseclickposition.lat);
+          markerService.setLon($scope.mouseclickposition.lon);
+          $scope.showAddMarker(event);
+        }
+    });
   });
 
 	$scope.showAddMarker = function(ev)  {
@@ -74,32 +61,22 @@ angular.module('comhubApp')
 	     $scope.alert = 'You cancelled the dialog.';
 	   });
 	};
-
-	
-
-  $scope.closeDialog = function() {
-    // Easily hides most recent dialog shown...
-    // no specific instance reference is needed.
-    $mdDialog.hide();
-  };
-
 		
 // Other Functions------------------------------------------------------
-		function updatePosition () 
-		// update user positioin
-		{
-			
-		if (navigator.geolocation) {
-			navigator.geolocation.getCurrentPosition(function(position){
-			  $scope.$apply(function(){
-			    $scope.center.lat = position.coords.latitude;
-			    $scope.center.lon = position.coords.longitude;
-			    $scope.center.zoom = 13;
-			  });
-			});
-		return true;
-		} // end if navigator
-		return false;
-		}
+	function updatePosition () 
+	// update user positioin
+	{
+	if (navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition(function(position){
+		  $scope.$apply(function(){
+		    $scope.center.lat = position.coords.latitude;
+		    $scope.center.lon = position.coords.longitude;
+		    $scope.center.zoom = 13;
+		  });
+		});
+	return true;
+	} // end if navigator
+	return false;
+	}
 
-	}]);
+}]);

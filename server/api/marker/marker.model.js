@@ -9,7 +9,6 @@ var MarkerSchema = new Schema({
 	lat: Number,
 	lon: Number,
 	user: String,
-	User: String,
 	created_at: {type: Date, default: Date.now}
 });
 

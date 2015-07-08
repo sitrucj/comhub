@@ -5,28 +5,36 @@ angular.module('comhubApp')
   	'$scope', 
   	'$mdDialog',
 		'$http',
-		'socket', 
-  	function ($scope, $mdDialog, $http, socket) {
+		'socket',
+		'markerService',
+  	function ($scope, $mdDialog, $http, socket, markerService) {
 	
-	$scope.markers = [];
-	$scope.newMarker = undefined;
-  
+
+	var newMarker = {};
+
+	
   $scope.clearValue = function() {
-    $scope.newMarker = undefined;
+    $scope.newMarker.title = {};
   };
 
   $http.get('/api/markers').success(function(markers) {
-    $scope.markers = markers;
-    socket.syncUpdates('marker', $scope.markers);
+    markerService.markers = markers;
+    socket.syncUpdates('marker', markerService.markers);
   });
   
   $scope.addMarker = function() {
-    if($scope.newMarker === undefined) {
+    if($scope.newMarker.title === '') {
+    	console.log('newMarker title is empty');
       return;
     }
-    console.log($scope.newMarker.title);
-    // $http.post('/api/markers', { name: $scope.newMarker });
-    // $scope.newMarker = '';
+
+    markerService.setTitle($scope.newMarker.title);
+    markerService.setDescription($scope.newMarker.description);
+
+    markerService.post();
+
+    $scope.newMarker = {};
+    $scope.hide();
   };
 
   $scope.deleteMarker= function(marker) {
