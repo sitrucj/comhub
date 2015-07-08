@@ -31,37 +31,6 @@ angular.module('comhubApp')
 
       projection: 'EPSG:4326'
 		});
-		
-	$scope.markers = [];
-	$scope.newMarker = undefined;
-  
-  $scope.clearValue = function() {
-    $scope.newMarker = undefined;
-  };
-
-  $http.get('/api/markers').success(function(markers) {
-    $scope.markers = markers;
-    socket.syncUpdates('marker', $scope.markers);
-  });
-  
-  $scope.addMarker = function() {
-    alert('Form was valid!');
-    // if($scope.newMarker === '') {
-    //   return;
-    // }
-    // $http.post('/api/markers', { name: $scope.newMarker });
-    // $scope.newMarker = '';
-  };
-
-  $scope.deleteMarker= function(marker) {
-    $http.delete('/api/markers/' + marker._id);
-  };
-
-  $scope.$on('$destroy', function () {
-    socket.unsyncUpdates('marker');
-  });
-
-
 
 	$scope.$on('openlayers.map.pointermove', function(event, data) {
       $scope.$apply(function() {
