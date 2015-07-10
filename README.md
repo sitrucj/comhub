@@ -1,8 +1,4 @@
 #Community Hub
-A social platform for people and their goverments to interact
+This is a social map for people to post markers made with a the yeoman fullstack gennerator. 
 
-Build with the yeoman Mean Fullstack gennerator, openlayers3, and love. 
-
-Grunt to build and run. 
-
-
+To instal you must have **yo** **grunt** 
