@@ -2,16 +2,19 @@
 
 angular.module('comhubApp')
   .service('markerService', function ($http) {
-	  this.markers = [];
-		this.newMarker = {	title: '',
+		this.newMarker = {	name: '',
 			description: '',
 			lat: '',
 			lon: '',
 			user: 'anonymous'};
 
-		this.setTitle = function (title) {
-			this.newMarker.title = title;
-			console.log('title service set: ' + this.newMarker.title);
+		this.getNewMarker = function () {
+			return this.newMarker;
+		};
+
+		this.setTitle = function (name) {
+			this.newMarker.name = name;
+			console.log('name service set: ' + this.newMarker.name);
 		};
 		this.setDescription = function (description) {
 			this.newMarker.description = description;
@@ -26,13 +29,13 @@ angular.module('comhubApp')
 			console.log('lon service set: ' + this.newMarker.lon);
 		};
 		this.reset = function () {
-			this.newMarker =  {	title: '',
+			this.newMarker =  {	name: '',
 				description: '',
 				lat: '',
 				lon: '',
 				user: '',
 				created_at: ''};		
-		}
+		};
 		
 
 
@@ -47,7 +50,7 @@ angular.module('comhubApp')
 		}
 
 		this.post = function () {
-			$http.post('/api/markers',  { title: this.newMarker.title,
+			$http.post('/api/markers',  { name: this.newMarker.name,
 			description: this.newMarker.description,
 			lat: this.newMarker.lat,
 			lon: this.newMarker.lon,

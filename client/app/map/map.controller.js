@@ -1,13 +1,7 @@
 'use strict';
 
 angular.module('comhubApp')
-	.controller('MapCtrl', [
-		'$scope', 
-		'$mdDialog',
-		'$http',
-		'socket',
-		'markerService',
-		function ($scope, $mdDialog, $http, socket, markerService) {
+	.controller('MapCtrl', function ($scope, $mdDialog, $http, socket, markerService) {
 
 		angular.extend($scope, {
 			windsor: { 
@@ -25,38 +19,49 @@ angular.module('comhubApp')
             map: [ 'singleclick', 'pointermove' ]
         }
       },
-      mouseposition: {},
       mouseclickposition: {},
+      projection: 'EPSG:4326',
+      markers: $scope.markers
+	});
 
-      projection: 'EPSG:4326'
-		});
+	$scope.markers = [];
+	$scope.label = {
+              message: 'test',
+              show: false,
+              showOnMouseOver: true
+          		}
 
-	$scope.$on('openlayers.map.singleclick', function(event, data) {
-	  $scope.$apply(function() {
-        if ($scope.projection === data.projection) {
-        	$scope.mouseclickposition = data.coord;
-        } else {
-          var p = ol.proj.transform([ data.coord[0], data.coord[1] ], data.projection, $scope.projection);
-          $scope.mouseclickposition = {
-              lat: p[1],
-              lon: p[0],
-              projection: $scope.projection
-          }
-          //set service for global
-          markerService.setLat($scope.mouseclickposition.lat);
-          markerService.setLon($scope.mouseclickposition.lon);
-          $scope.showAddMarker(event);
-        }
-    });
-  });
+  getMarkers();
 
-	$scope.showAddMarker = function(ev)  {
+  function addMarkerProperties () {
+	  for (var i = $scope.markers.length - 1; i >= 0; i--) {
+	  	console.log($scope.markers[i].name);
+	  	$scope.markers[i].onClick = 'function (event, properties) { console.log(this);' +
+	  		' // ol.Feature instanceconsole.log(properties); // === $scope.marker';
+	  	console.log($scope.markers[i].onClick);
+	  };
+  }
+
+  function getMarkers () {
+		$scope.markers = $http.get('api/markers').success(function (markers) {
+			$scope.markers = markers;
+			socket.syncUpdates('marker', $scope.markers);
+			addMarkerProperties();
+		})
+  };
+
+	$scope.clickMarker = function () {
+		alert('clicked');
+	};
+
+	$scope.showAddMarker = function(ev)  
+	//shows the add marker dialog to input details
+	{
 	  $mdDialog.show({
 	    // templateUrl: '../addMarker/addMarker.html',
 	    template: '<md-dialog><add-marker></add-marker></md-dialog>',
 	    parent: angular.element(document.body),
-	    targetEvent: ev,
-	    locals: {point: $scope.mouseclickposition }
+	    targetEvent: ev
 	  }).then(function() {
 	     $scope.alert = 'You cancelled the dialog.';
 	   });
@@ -79,4 +84,18 @@ angular.module('comhubApp')
 	return false;
 	}
 
-}]);
+	$scope.$on('openlayers.map.singleclick', function(event, data) {
+	  $scope.$apply(function() {
+	      if ($scope.projection === data.projection) {
+	      	$scope.mouseclickposition = data.coord;
+	      } else {
+	        var p = ol.proj.transform([ data.coord[0], data.coord[1] ], data.projection, $scope.projection);
+	        //set service for global
+	        markerService.setLat(p[1]);
+	        markerService.setLon(p[0]);
+	        $scope.showAddMarker(event);
+	      }
+	  });
+  });
+
+});
