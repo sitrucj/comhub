@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('comhubApp')
-	.controller('MapCtrl', function ($scope, $mdDialog, $http, socket, markerService) {
+	.controller('MapCtrl', function ($scope, $mdDialog, $http, socket, markerService, Auth) {
 
 		angular.extend($scope, {
 			windsor: { 
@@ -86,16 +86,30 @@ angular.module('comhubApp')
 
 	$scope.$on('openlayers.map.singleclick', function(event, data) {
 	  $scope.$apply(function() {
-	      if ($scope.projection === data.projection) {
-	      	$scope.mouseclickposition = data.coord;
-	      } else {
-	        var p = ol.proj.transform([ data.coord[0], data.coord[1] ], data.projection, $scope.projection);
-	        //set service for global
-	        markerService.setLat(p[1]);
-	        markerService.setLon(p[0]);
-	        $scope.showAddMarker(event);
-	      }
+	      if (Auth.isLoggedIn()) {
+		      if ($scope.projection === data.projection) {
+		      	$scope.mouseclickposition = data.coord;
+		      } else {
+		        var p = ol.proj.transform([ data.coord[0], data.coord[1] ], data.projection, $scope.projection);
+		        //set service for global
+		        markerService.setLat(p[1]);
+		        markerService.setLon(p[0]);
+		        $scope.showAddMarker(event);
+		      }
+	      } else { $scope.pleaseLoginPrompt(); }
 	  });
   });
+
+  $scope.pleaseLoginPrompt = function() {
+    $mdDialog.show(
+      $mdDialog.alert()
+        .parent(angular.element(document.body))
+        .title('Please Log In')
+        .content('You must be logged in to add a maker to the map.')
+        .ariaLabel('Log in required')
+        .ok('Got it!')
+        .targetEvent()
+    );
+  };
 
 });

@@ -1,12 +1,13 @@
 'use strict';
 
 angular.module('comhubApp')
-  .service('markerService', function ($http) {
+  .service('markerService', function ($http, Auth) {
 		this.newMarker = {	name: '',
 			description: '',
 			lat: '',
 			lon: '',
-			user: 'anonymous'};
+			user: Auth.getCurrentUser().name
+			};
 
 		this.getNewMarker = function () {
 			return this.newMarker;
@@ -28,16 +29,14 @@ angular.module('comhubApp')
 			this.newMarker.lon = lon;
 			console.log('lon service set: ' + this.newMarker.lon);
 		};
-		this.reset = function () {
+		this.resetNewMarker = function () {
 			this.newMarker =  {	name: '',
 				description: '',
 				lat: '',
 				lon: '',
-				user: '',
 				created_at: ''};		
 		};
 		
-
 
 		this.setMarkers = function (markers) {
 			this.markers = markers;
@@ -50,14 +49,16 @@ angular.module('comhubApp')
 		}
 
 		this.post = function () {
-			$http.post('/api/markers',  { name: this.newMarker.name,
-			description: this.newMarker.description,
-			lat: this.newMarker.lat,
-			lon: this.newMarker.lon,
-			user: 'anonymous'});
+			$http.post('/api/markers',  { 
+				name: this.newMarker.name,
+				description: this.newMarker.description,
+				lat: this.newMarker.lat,
+				lon: this.newMarker.lon,
+				user: this.newMarker.user
+			});
 
-			this.newMarker = {};
-			console.log('posted');
+			console.log(this.newMarker.user + ' :posted');
+			this.resetNewMarker();
 		}
 
 	});
