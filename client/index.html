@@ -38,9 +38,10 @@
     <![endif]-->
   
     <!-- Add your site or application content here -->
-    <div ng-include="'components/navbar/navbar.html'"></div>
-    <div ui-view></div>
-
+    <div layout="column">
+      <div ng-include="'components/navbar/navbar.html'"></div>
+      <ui-view flex style="position: relative;"></ui-view>
+    </div>
 
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->

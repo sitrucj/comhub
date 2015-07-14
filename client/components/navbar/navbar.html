@@ -28,11 +28,6 @@
           <li ng-show="isLoggedIn()"><p class="navbar-text">Hello {{ getCurrentUser().name }}</p> </li>
           <li ng-show="isLoggedIn()" ng-class="{active: isActive('/settings')}"><md-button aria-label="settings" class="md-icon-button" href="/settings"><span class="glyphicon glyphicon-cog"></span></md-button></li>
           <li ng-show="isLoggedIn()" ng-class="{active: isActive('/logout')}"><md-button href="" ng-click="logout()">Logout</md-button></li>
-          <li>
-            <md-button class="md-fab md-mini md-warn" aria-label="to the source!" href="https://github.com/sitrucj/comhub">
-             
-            </a>
-          </li>
         </ul>
 
       

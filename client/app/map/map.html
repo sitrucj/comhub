@@ -1,6 +1,7 @@
-<!-- <div ng-include="'components/navbar/navbar.html'"></div> -->
+<!-- this page is not actually in use at the moment but can be accesed at /map
+ the app is curretnly using main for the map -->
 <div ng-controller="MapCtrl">
-	<openlayers  ol-center="windsor" ol-defaults="defaults">
+	<openlayers  ol-center="windsor" ol-defaults="defaults" height="700px">
 		<ol-marker ng-repeat="marker in markers" 
 		lat="marker.lat" 
 		lon="marker.lon"

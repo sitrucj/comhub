@@ -3,10 +3,10 @@
 angular.module('comhubApp')
   .controller('NavbarCtrl', function ($scope, $location, Auth) {
     $scope.menu = [
-    {
-      'title': 'Map',
-      'link': '/map'
-    }
+      {
+        'title': 'Map',
+        'link': '/'
+      }
     ];
 
     $scope.isCollapsed = true;
