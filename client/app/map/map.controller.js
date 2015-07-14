@@ -23,21 +23,27 @@ angular.module('comhubApp')
       projection: 'EPSG:4326',
       markers: $scope.markers
 	});
-
-	$scope.markers = [];
+	$scope.checked = false;
+	$scope.markers = null;
 	$scope.label = {
               message: 'test',
               show: false,
               showOnMouseOver: true
           		}
 
-  getMarkers();
+	getMarkers();
+
+	if (!$scope.checked) 
+	// gets postition one time per session
+	{
+		getUserPosition();
+ 		$scope.checked = true;
+ 	}
 
   function addMarkerProperties () {
 	  for (var i = $scope.markers.length - 1; i >= 0; i--) {
 	  	console.log($scope.markers[i].name);
-	  	$scope.markers[i].onClick = 'function (event, properties) { console.log(this);' +
-	  		' // ol.Feature instanceconsole.log(properties); // === $scope.marker';
+	  	$scope.markers[i].onClick = 'function (event, properties) { console.log("clicked!"); }';
 	  	console.log($scope.markers[i].onClick);
 	  };
   }
@@ -68,7 +74,7 @@ angular.module('comhubApp')
 	};
 		
 // Other Functions------------------------------------------------------
-	function updatePosition () 
+	function getUserPosition () 
 	// update user positioin
 	{
 	if (navigator.geolocation) {
