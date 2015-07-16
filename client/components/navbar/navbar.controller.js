@@ -6,6 +6,10 @@ angular.module('comhubApp')
       {
         'title': 'Map',
         'link': '/'
+      },
+      {
+        'title': 'About',
+        'link': '/about'
       }
     ];
 

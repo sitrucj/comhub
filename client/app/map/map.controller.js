@@ -10,9 +10,9 @@ angular.module('comhubApp')
 			  zoom: 13
 			},
 			center: {
-				lat: 54.063408,
-			  lon: -101.910305,
-				zoom: 3
+				lat: 0,
+			  lon: 0,
+			  zoom: 3
 			},
 			defaults: {
         events: {
@@ -23,7 +23,6 @@ angular.module('comhubApp')
       projection: 'EPSG:4326',
       markers: $scope.markers
 	});
-	$scope.checked = false;
 	$scope.markers = null;
 	$scope.label = {
               message: 'test',
@@ -33,32 +32,7 @@ angular.module('comhubApp')
 
 	getMarkers();
 
-	if (!$scope.checked) 
-	// gets postition one time per session
-	{
-		getUserPosition();
- 		$scope.checked = true;
- 	}
 
-  function addMarkerProperties () {
-	  for (var i = $scope.markers.length - 1; i >= 0; i--) {
-	  	console.log($scope.markers[i].name);
-	  	$scope.markers[i].onClick = 'function (event, properties) { console.log("clicked!"); }';
-	  	console.log($scope.markers[i].onClick);
-	  };
-  }
-
-  function getMarkers () {
-		$scope.markers = $http.get('api/markers').success(function (markers) {
-			$scope.markers = markers;
-			socket.syncUpdates('marker', $scope.markers);
-			addMarkerProperties();
-		})
-  };
-
-	$scope.clickMarker = function () {
-		alert('clicked');
-	};
 
 	$scope.showAddMarker = function(ev)  
 	//shows the add marker dialog to input details
@@ -74,21 +48,6 @@ angular.module('comhubApp')
 	};
 		
 // Other Functions------------------------------------------------------
-	function getUserPosition () 
-	// update user positioin
-	{
-	if (navigator.geolocation) {
-		navigator.geolocation.getCurrentPosition(function(position){
-		  $scope.$apply(function(){
-		    $scope.center.lat = position.coords.latitude;
-		    $scope.center.lon = position.coords.longitude;
-		    $scope.center.zoom = 13;
-		  });
-		});
-	return true;
-	} // end if navigator
-	return false;
-	}
 
 	$scope.$on('openlayers.map.singleclick', function(event, data) {
 	  $scope.$apply(function() {
@@ -104,18 +63,36 @@ angular.module('comhubApp')
 		      }
 	      } else { $scope.pleaseLoginPrompt(); }
 	  });
-  });
+	});
 
-  $scope.pleaseLoginPrompt = function() {
-    $mdDialog.show(
-      $mdDialog.alert()
-        .parent(angular.element(document.body))
-        .title('Please Log In')
-        .content('You must be logged in to add a maker to the map.')
-        .ariaLabel('Log in required')
-        .ok('Got it!')
-        .targetEvent()
-    );
+	$scope.pleaseLoginPrompt = function() {
+	  $mdDialog.show(
+	    $mdDialog.alert()
+	      .parent(angular.element(document.body))
+	      .title('Please Log In')
+	      .content('You must be logged in to add a maker to the map.')
+	      .ariaLabel('Log in required')
+	      .ok('Got it!')
+	      .targetEvent()
+	  );
+	};
+
+	function addMarkerProperties ()
+	// this is suppoed to be adding the onclick to the markers that is not currently working. 
+	{
+	  for (var i = $scope.markers.length - 1; i >= 0; i--) {
+	  	console.log($scope.markers[i].name);
+	  	$scope.markers[i].onClick = 'function (event, properties) { console.log("clicked!"); }';
+	  	console.log($scope.markers[i].onClick);
+	  };
+	}
+
+	function getMarkers () {
+		$scope.markers = $http.get('api/markers').success(function (markers) {
+			$scope.markers = markers;
+			socket.syncUpdates('marker', $scope.markers);
+			addMarkerProperties();
+		})
   };
 
 });
