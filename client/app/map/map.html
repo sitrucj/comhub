@@ -1,10 +1,9 @@
 <!-- this page is not actually in use at the moment but can be accesed at /map
- the app is curretnly using main for the map -->
-<div ng-controller="MapCtrl" height=100%>
+ the app is curretnly using main for the map
+<div ng-controller="MapCtrl">
 	<openlayers  ol-center="center" ol-defaults="defaults">
-		<ol-marker ng-repeat="marker in markers" 
-		lat="marker.lat" 
-		lon="marker.lon"
-		ol-marker-properties="marker" ></ol-marker>
+		<ol-marker ng-repeat="marker in markers" lat="marker.lat" lon="marker.lon" ol-marker-properties="marker" ></ol-marker>
 	</openlayers>
 </div>
+
+ -->

@@ -13,13 +13,4 @@
     letter-spacing: -1px;
 }
 
-.footer {
-    text-align: center;
-    padding: 30px 0;
-    margin-top: 70px;
-    border-top: 1px solid #E5E5E5;
-}
-
-.map, .html, .body {
-    height: 100%;
-}
+#icon { top: -100px;}

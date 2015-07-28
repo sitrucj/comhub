@@ -24,28 +24,10 @@ angular.module('comhubApp')
       markers: $scope.markers
 	});
 	$scope.markers = null;
-	$scope.label = {
-              message: 'test',
-              show: false,
-              showOnMouseOver: true
-          		}
-  
+	$scope.enableAddMarker = false;
   $scope.loginDialogShownOnce = false;
 
 	getMarkers();
-
-	// GEOLOCATION
- //  geo.getPosition().then( function (position) {
- //  	console.log(position);
- //    $scope.center.lat = position.latitude;
- //    $scope.center.lon = position.longitude;
- //    $scope.center.zoom = 13;
- //    $scope.$apply;
-	// });
-
-  
-
-
 
 
 	$scope.showAddMarker = function(ev)  
@@ -65,7 +47,7 @@ angular.module('comhubApp')
 
 	$scope.$on('openlayers.map.singleclick', function(event, data) {
 	  $scope.$apply(function() {
-	      if (Auth.isLoggedIn()) {
+	      if (Auth.isLoggedIn() && $scope.enableAddMarker) {
 		      if ($scope.projection === data.projection) {
 		      	$scope.mouseclickposition = data.coord;
 		      } else {
@@ -74,6 +56,7 @@ angular.module('comhubApp')
 		        markerService.setLat(p[1]);
 		        markerService.setLon(p[0]);
 		        $scope.showAddMarker(event);
+		        $scope.enableAddMarker = false;
 		      }
 	      } else { $scope.pleaseLoginPrompt(); }
 	  });
@@ -95,16 +78,25 @@ angular.module('comhubApp')
 	};
 
 	function addMarkerProperties ()
-	// this is suppoed to be adding the onclick to the markers that is not currently working. 
+	// needed to enable click events on a marker!
+	// Have a label property defined for the marker.
+	// Have the show property of the label set to false.
+	// Have some transcluded content in the marker.
 	{
 	  for (var i = $scope.markers.length - 1; i >= 0; i--) {
-	  	console.log($scope.markers[i].name);
-	  	$scope.markers[i].onClick = 'function (event, properties) { console.log("clicked!"); }';
-	  	console.log($scope.markers[i].onClick);
+	  	$scope.markers[i].onClick = function (event, properties) { console.log('Clicked a marker'); };
+	  	$scope.markers[i].label = { 
+	  	// Note: Duplication of data here @ message. Fix this later.
+	  	"message": $scope.markers[i].name,
+      "show": false,
+      "showOnMouseOver": false
+      };
 	  };
 	}
 
-	function getMarkers () {
+	function getMarkers ()
+	// get markers from mongo
+	{
 		$scope.markers = $http.get('api/markers').success(function (markers) {
 			$scope.markers = markers;
 			socket.syncUpdates('marker', $scope.markers);

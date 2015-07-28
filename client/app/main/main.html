@@ -1,8 +1,16 @@
-<div ng-controller="MapCtrl" style="postion:absolute;">
-  <openlayers  ol-center="center" ol-defaults="defaults" style="postion:absolute; width=100%; height=100%;">
-    <ol-marker ng-repeat="marker in markers" 
-    lat="marker.lat" 
-    lon="marker.lon"
-    ol-marker-properties="marker" ></ol-marker>
+<div ng-controller="MapCtrl">
+  <openlayers  ol-center="center" ol-defaults="defaults">
+    <ol-marker ng-repeat="marker in markers" lat="marker.lat" lon="marker.lon" ol-marker-properties="marker" ></ol-marker>
   </openlayers>
+
+  <!-- suposed to trigger the ability to add a marker -->
+	<!-- ng-disabled="!isLoggedIn()" -->
+	<div layout=row flex>
+	<span flex></span>
+	<md-button id="icon" class="md-fab" aria-label="Add a Marker" data-ng-click="enableAddMarker=true">
+		<md-tooltip>Add Marker</md-tooltip>
+		<md-icon md-svg-icon="../assets/images/icons/pluss.svg"></md-icon>
+	</md-button>
+	 <span flex="5"></span>
+	</div>
 </div>
