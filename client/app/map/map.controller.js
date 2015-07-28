@@ -12,7 +12,7 @@ angular.module('comhubApp')
 			center: {
 				lat: 0,
 			  lon: 0,
-			  zoom: 3
+			  autodiscover: true
 			},
 			defaults: {
         events: {
@@ -35,11 +35,13 @@ angular.module('comhubApp')
 	getMarkers();
 
 	// GEOLOCATION
-  geo.getPosition().then( function (position) {
-  	console.log(position);
-    $scope.center.lat = position.latitude;
-    $scope.center.lon = position.longitude;
-	});
+ //  geo.getPosition().then( function (position) {
+ //  	console.log(position);
+ //    $scope.center.lat = position.latitude;
+ //    $scope.center.lon = position.longitude;
+ //    $scope.center.zoom = 13;
+ //    $scope.$apply;
+	// });
 
   
 

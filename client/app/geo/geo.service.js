@@ -1,17 +1,15 @@
 'use strict';
 
+// Not used at all 
+// using center autodiscover instead
+
 angular.module('comhubApp')
   .factory('geo', function ($q) {
 
     var getPosition = function () {
         var deferred = $q.defer();
         if (navigator.geolocation) {
-          deferred.resolve(navigator.geolocation.getCurrentPosition(function (position) {
-            var crd = position.coords;
-            console.log('Latitude : ' + crd.latitude);
-            console.log('Longitude: ' + crd.longitude);
-            return crd;
-          } ));
+          navigator.geolocation.getCurrentPosition(function (position) { deferred.resolve(position); });
         }
         return deferred.promise;
     }
