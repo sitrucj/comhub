@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('comhubApp')
-	.controller('MapCtrl', function ($scope, $mdDialog, $http, socket, markerService, Auth) {
+	.controller('MapCtrl', function ($scope, $mdDialog, $http, socket, markerService, Auth, geo) {
 
 		angular.extend($scope, {
 			windsor: { 
@@ -29,8 +29,20 @@ angular.module('comhubApp')
               show: false,
               showOnMouseOver: true
           		}
+  
+  $scope.loginDialogShownOnce = false;
 
 	getMarkers();
+
+	// GEOLOCATION
+  geo.getPosition().then( function (position) {
+  	console.log(position);
+    $scope.center.lat = position.latitude;
+    $scope.center.lon = position.longitude;
+	});
+
+  
+
 
 
 
@@ -66,15 +78,18 @@ angular.module('comhubApp')
 	});
 
 	$scope.pleaseLoginPrompt = function() {
-	  $mdDialog.show(
-	    $mdDialog.alert()
-	      .parent(angular.element(document.body))
-	      .title('Please Log In')
-	      .content('You must be logged in to add a maker to the map.')
-	      .ariaLabel('Log in required')
-	      .ok('Got it!')
-	      .targetEvent()
-	  );
+		if (!$scope.loginDialogShownOnce){
+		  $mdDialog.show(
+		    $mdDialog.alert()
+		      .parent(angular.element(document.body))
+		      .title('Please Log In')
+		      .content('You must be logged in to add a maker to the map.')
+		      .ariaLabel('Log in required')
+		      .ok('Got it!')
+		      .targetEvent()
+		  );
+		  $scope.loginDialogShownOnce=true;
+		}
 	};
 
 	function addMarkerProperties ()
