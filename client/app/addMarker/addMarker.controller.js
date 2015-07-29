@@ -10,7 +10,7 @@ angular.module('comhubApp')
   	function ($scope, $mdDialog, $http, socket, markerService) {
 	
 
-	var newMarker = {};
+	$scope.newMarker = {};
 
 	
   $scope.clearValue = function() {
@@ -55,5 +55,5 @@ angular.module('comhubApp')
 
   $scope.answer = function(answer) {
     $mdDialog.hide(answer);
-	}
+	};
 }]);

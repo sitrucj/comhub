@@ -12,7 +12,7 @@ angular.module('comhubApp')
           navigator.geolocation.getCurrentPosition(function (position) { deferred.resolve(position); });
         }
         return deferred.promise;
-    }
+    };
 
     // Public API here
     return {

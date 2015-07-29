@@ -40,13 +40,14 @@ angular.module('comhubApp')
 
 		this.setMarkers = function (markers) {
 			this.markers = markers;
-		}
+		};
 		this.markers = function () {
 			return this.markers;
-		}
+		};
+		
 		this.addMarker = function (marker) {
 			//todo append marker
-		}
+		};
 
 		this.post = function () {
 			$http.post('/api/markers',  { 
@@ -59,6 +60,6 @@ angular.module('comhubApp')
 
 			console.log(this.newMarker.user + ' :posted');
 			this.resetNewMarker();
-		}
+		};
 
 	});

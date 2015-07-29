@@ -5,7 +5,9 @@ angular.module('comhubApp')
     return {
       templateUrl: 'app/markerInfoDialogue/markerInfoDialogue.html',
       restrict: 'EA',
-      link: function (scope, element, attrs) {
+      link: function () 
+      // scope, element, attrs removed 
+      {
       }
     };
   });

@@ -5,7 +5,7 @@ angular.module('comhubApp')
     return {
       templateUrl: 'app/addMarker/addMarker.html',
       restrict: 'E',
-      link: function (scope, element, attrs) {
+      link: function () {
       }
     };
   });

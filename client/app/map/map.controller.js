@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('comhubApp')
-	.controller('MapCtrl', function ($scope, $mdDialog, $http, socket, markerService, Auth, geo) {
+	.controller('MapCtrl', function ($scope, $mdDialog, $http, socket, markerService, Auth) {
 
 		angular.extend($scope, {
 			center: {
@@ -25,7 +25,15 @@ angular.module('comhubApp')
 	$scope.enableAddMarker = false;
   $scope.loginDialogShownOnce = false;
 
-	getMarkers();
+  function getMarkers ()
+	// get markers from mongo
+	{
+		$scope.markers = $http.get('api/markers').success(function (markers) {
+			$scope.markers = markers;
+			socket.syncUpdates('marker', $scope.markers);
+			addMarkerProperties();
+		});
+  }
 
 	$scope.showMarkerInfoDialogue = function (ev)
 	// Opens the marker info in a dialogue for user to view
@@ -99,21 +107,15 @@ angular.module('comhubApp')
 	  	$scope.markers[i].onClick = function (event, properties) { $scope.clickedMarker = properties; $scope.showMarkerInfoDialogue(properties); };
 	  	$scope.markers[i].label = { 
 	  	// Note: Duplication of data here @ message. Fix this later.
-	  	"message": $scope.markers[i].name,
-      "show": false,
-      "showOnMouseOver": false
+	  	'message': $scope.markers[i].name,
+      'show': false,
+      'showOnMouseOver': false
       };
-	  };
+	  }
 	}
 
-	function getMarkers ()
-	// get markers from mongo
-	{
-		$scope.markers = $http.get('api/markers').success(function (markers) {
-			$scope.markers = markers;
-			socket.syncUpdates('marker', $scope.markers);
-			addMarkerProperties();
-		})
-  };
+
+
+	getMarkers();
 
 });
