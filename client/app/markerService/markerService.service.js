@@ -58,7 +58,7 @@ angular.module('comhubApp')
 				user: this.newMarker.user
 			});
 
-			console.log(this.newMarker.user + ' :posted');
+			console.log(this.newMarker.user + ' :posted Description: ' + this.newMarker.description); 
 			this.resetNewMarker();
 		};
 

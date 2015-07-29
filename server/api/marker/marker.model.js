@@ -5,7 +5,7 @@ var mongoose = require('mongoose'),
 
 var MarkerSchema = new Schema({
 	name: String,
-	text: String,
+	description: String,
 	lat: Number,
 	lon: Number,
 	user: String,

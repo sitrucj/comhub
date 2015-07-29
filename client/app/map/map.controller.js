@@ -52,7 +52,6 @@ angular.module('comhubApp')
 	// shows the add marker dialog to input details
 	{
 	  $mdDialog.show({
-	    // templateUrl: '../addMarker/addMarker.html',
 	    template: '<md-dialog><div add-marker></div></md-dialog>',
 	    parent: angular.element(document.body),
 	    targetEvent: ev
