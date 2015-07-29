@@ -4,11 +4,6 @@ angular.module('comhubApp')
 	.controller('MapCtrl', function ($scope, $mdDialog, $http, socket, markerService, Auth, geo) {
 
 		angular.extend($scope, {
-			windsor: { 
-				lat: 42.300095327770569,
-			  lon: -83.02625377869369,
-			  zoom: 13
-			},
 			center: {
 				lat: 0,
 			  lon: 0,
@@ -21,31 +16,46 @@ angular.module('comhubApp')
       },
       mouseclickposition: {},
       projection: 'EPSG:4326',
-      markers: $scope.markers
-	});
+      markers: $scope.markers,
+      clickedMarker: {}
+		});
+		
+	$scope.isNotLoggedIn = !(Auth.isLoggedIn);
 	$scope.markers = null;
 	$scope.enableAddMarker = false;
   $scope.loginDialogShownOnce = false;
 
 	getMarkers();
 
-
-	$scope.showAddMarker = function(ev)  
-	//shows the add marker dialog to input details
+	$scope.showMarkerInfoDialogue = function (ev)
+	// Opens the marker info in a dialogue for user to view
 	{
-	  $mdDialog.show({
-	    // templateUrl: '../addMarker/addMarker.html',
-	    template: '<md-dialog><add-marker></add-marker></md-dialog>',
+		$mdDialog.show({
+			template: '<md-dialog><div marker-info-dialogue></div></md-dialog>',
 	    parent: angular.element(document.body),
 	    targetEvent: ev
 	  }).then(function() {
 	     $scope.alert = 'You cancelled the dialog.';
 	   });
 	};
-		
-// Other Functions------------------------------------------------------
 
-	$scope.$on('openlayers.map.singleclick', function(event, data) {
+
+	$scope.showAddMarker = function(ev)  
+	// shows the add marker dialog to input details
+	{
+	  $mdDialog.show({
+	    // templateUrl: '../addMarker/addMarker.html',
+	    template: '<md-dialog><div add-marker></div></md-dialog>',
+	    parent: angular.element(document.body),
+	    targetEvent: ev
+	  }).then(function() {
+	     $scope.alert = 'You cancelled the dialog.';
+	   });
+	};
+	
+	$scope.$on('openlayers.map.singleclick', function(event, data) 
+	// Used to deal with clicking to add a marker
+	{
 	  $scope.$apply(function() {
 	      if (Auth.isLoggedIn() && $scope.enableAddMarker) {
 		      if ($scope.projection === data.projection) {
@@ -62,8 +72,10 @@ angular.module('comhubApp')
 	  });
 	});
 
-	$scope.pleaseLoginPrompt = function() {
-		if (!$scope.loginDialogShownOnce){
+	$scope.pleaseLoginPrompt = function() 
+	// prompts the user to log in
+	{
+		if (!$scope.loginDialogShownOnce && $scope.isNotLoggedIn){
 		  $mdDialog.show(
 		    $mdDialog.alert()
 		      .parent(angular.element(document.body))
@@ -84,7 +96,7 @@ angular.module('comhubApp')
 	// Have some transcluded content in the marker.
 	{
 	  for (var i = $scope.markers.length - 1; i >= 0; i--) {
-	  	$scope.markers[i].onClick = function (event, properties) { console.log('Clicked a marker'); };
+	  	$scope.markers[i].onClick = function (event, properties) { $scope.clickedMarker = properties; $scope.showMarkerInfoDialogue(properties); };
 	  	$scope.markers[i].label = { 
 	  	// Note: Duplication of data here @ message. Fix this later.
 	  	"message": $scope.markers[i].name,

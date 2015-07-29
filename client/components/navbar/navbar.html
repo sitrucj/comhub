@@ -1,4 +1,4 @@
-
+  
   <div ng-controller="NavbarCtrl">
     <md-toolbar class="md-whiteframe-z2" >
       <div class="md-toolbar-tools" flex layout="row">
@@ -17,14 +17,40 @@
           
           <!-- spacer to seperate the toolbar left to right -->
           <span flex></span>
-
-        
+          
+          <!-- Large Screen Gets individual buttons -->
+          <div hide-sm layout="row">
             <div ng-hide="isLoggedIn()" ng-class="{active: isActive('/signup')}"><md-button href="/signup">Sign up</md-button></div>
             <div ng-hide="isLoggedIn()" ng-class="{active: isActive('/login')}"><md-button href="/login">Login</md-button></div>
             <div ng-show="isLoggedIn()" hide-sm><p class="navbar-text">Hello {{ getCurrentUser().name }}</p> </div>
             <div ng-show="isLoggedIn()" ng-class="{active: isActive('/settings')}"><md-button aria-label="settings" class="md-icon-button" href="/settings"><span class="glyphicon glyphicon-cog"></span></md-button></div>
             <div ng-show="isLoggedIn()" ng-class="{active: isActive('/logout')}"><md-button class="md-warn" href="" ng-click="logout()">Logout</md-button></div>
-   
+          </div>
+
+          <!-- Used on small screens -->
+          <div hide-gt-sm class="lock-size" layout="row" layout-align="center center">
+            <md-fab-speed-dial md-direction="down" ng-class="md-fling">
+            <md-fab-trigger>
+              <md-button aria-label="menu" class="md-fab md-primary">
+                <md-icon md-svg-src="../assets/images/icons/menu.svg"></md-icon>
+              </md-button>
+            </md-fab-trigger>
+            
+            <md-fab-actions>
+
+              <div ng-hide="isLoggedIn()" ng-class="{active: isActive('/signup')}"><md-button class="md-fab md-raised md-mini" href="/signup">Sign up</md-button></div>
+    
+              <div ng-hide="isLoggedIn()" ng-class="{active: isActive('/login')}"><md-button class="md-fab md-raised md-mini" href="/login">Login</md-button></div>
+
+              <div ng-show="isLoggedIn()" ng-class="{active: isActive('/settings')}"><md-button aria-label="settings" class="md-icon-button" href="/settings"><span class="glyphicon glyphicon-cog"></span></md-button></div>
+
+              <div ng-show="isLoggedIn()" ng-class="{active: isActive('/logout')}"><md-button aria-label="Logout" class="md-fab md-raised md-mini md-warn" href="" ng-click="logout()">Logout</md-button></div>
+
+            </md-fab-actions>
+
+            </md-fab-speed-dial>
+            
+          </div>
         </div>
     </md-toolbar>
   </div>

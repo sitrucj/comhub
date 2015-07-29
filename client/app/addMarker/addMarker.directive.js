@@ -4,7 +4,7 @@ angular.module('comhubApp')
   .directive('addMarker', function () {
     return {
       templateUrl: 'app/addMarker/addMarker.html',
-      restrict: 'EA',
+      restrict: 'E',
       link: function (scope, element, attrs) {
       }
     };

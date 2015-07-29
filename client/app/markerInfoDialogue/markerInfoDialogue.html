@@ -1,0 +1,20 @@
+<div ng-controller="AddMarkerCtrl" layout=column>
+
+<md-toolbar>
+  <div class="md-toolbar-tools">
+    <!-- title -->
+    <h2>Testing</h2>
+    <span flex></span>
+    <md-button class="md-icon-button" ng-click="answer('not applicable')">
+      <md-icon md-svg-src="assets/images/icons/close24.svg" aria-label="Close" ></md-icon>
+    </md-button>
+  </div>
+</md-toolbar>
+
+<md-content>
+<!-- marker data goes here -->
+<p>
+Name: {{$scope.clickedMarker.name}}
+</p>
+</md-content>
+</div>
