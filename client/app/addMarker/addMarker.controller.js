@@ -32,6 +32,7 @@ angular.module('comhubApp')
     markerService.setDescription($scope.newMarker.description);
 
     markerService.post();
+    
     $scope.newMarker = {};
     $scope.hide();
   };

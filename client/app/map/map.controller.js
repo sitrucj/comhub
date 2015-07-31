@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('comhubApp')
-	.controller('MapCtrl', function ($scope, $mdDialog, $http, socket, markerService, Auth) {
+	.controller('MapCtrl', function ($scope, $mdDialog, $http, $mdToast, $animate, socket, markerService, Auth) {
 
 		angular.extend($scope, {
 			center: {
@@ -34,18 +34,6 @@ angular.module('comhubApp')
 			addMarkerProperties();
 		});
   }
-
-	$scope.showMarkerInfoDialogue = function (ev)
-	// Opens the marker info in a dialogue for user to view
-	{
-		$mdDialog.show({
-			template: '<md-dialog><div marker-info-dialogue></div></md-dialog>',
-	    parent: angular.element(document.body),
-	    targetEvent: ev
-	  }).then(function() {
-	     $scope.alert = 'You cancelled the dialog.';
-	   });
-	};
 
 
 	$scope.showAddMarker = function(ev)  
@@ -96,6 +84,19 @@ angular.module('comhubApp')
 		}
 	};
 
+	$scope.showMarkerInfoDialogue = function (ev)
+	// Opens the marker info in a dialogue for user to view
+	// The template is there instead of in anoher file because i can't seem to access sope in another file
+	{
+		$mdDialog.show({
+			template: '<div layout=column><md-dialog><md-toolbar><div class="md-toolbar-tools">{{clickedMarker.name}}<span flex></span><md-button class="md-icon-button" aria-label="Close" ng-click="answer()"><md-icon md-svg-src="assets/images/icons/close24.svg"></md-icon></md-button></div></md-toolbar>' + 
+			'<md-content layout-margin>{{clickedMarker.description}}</md-content></md-dialog></div>',
+			scope: $scope.$new()
+	  }).then(function() {
+	     $scope.alert = 'You cancelled the dialog.';
+	   });
+	};
+
 	function addMarkerProperties ()
 	// needed to enable click events on a marker!
 	// Have a label property defined for the marker.
@@ -103,7 +104,7 @@ angular.module('comhubApp')
 	// Have some transcluded content in the marker.
 	{
 	  for (var i = $scope.markers.length - 1; i >= 0; i--) {
-	  	$scope.markers[i].onClick = function (event, properties) { $scope.clickedMarker = properties; $scope.showMarkerInfoDialogue(properties); };
+	  	$scope.markers[i].onClick = function (event, properties) { $scope.clickedMarker = properties; console.log($scope.clickedMarker.name + " " + $scope.clickedMarker.description); $scope.showMarkerInfoDialogue(event); };
 	  	$scope.markers[i].label = { 
 	  	// Note: Duplication of data here @ message. Fix this later.
 	  	'message': $scope.markers[i].name,
@@ -112,6 +113,40 @@ angular.module('comhubApp')
       };
 	  }
 	}
+
+
+	// Toast! for add marker
+	$scope.toastPosition = {
+    bottom: false,
+    top: true,
+    left: false,
+    right: true
+  };
+  $scope.getToastPosition = function() {
+    return Object.keys($scope.toastPosition)
+      .filter(function(pos) { return $scope.toastPosition[pos]; })
+      .join(' ');
+  };
+
+	$scope.showSimpleToast = function() {
+    $mdToast.show(
+      $mdToast.simple()
+        .content('Click the map to add your marker!')
+        .position($scope.getToastPosition())
+        .hideDelay(3000)
+    );
+  };
+
+  //Marker details
+  $scope.hide = function() {
+    $mdDialog.hide();
+  };
+  $scope.cancel = function() {
+    $mdDialog.cancel();
+  };
+    $scope.answer = function(answer) {
+    $mdDialog.hide(answer);
+	};
 
 
 
