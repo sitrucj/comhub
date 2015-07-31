@@ -5,18 +5,20 @@
 
 	<!-- using ng-hide on markers so the list doesn't show up. -->
 
-  <openlayers  ol-center="center" ol-defaults="defaults" >
+  <openlayers  ol-center="center" ol-defaults="defaults" style="position:absolute;"width="100%" height="100%" >
     <ol-marker ng-repeat="marker in markers" ng-hide="true" lat="marker.lat" lon="marker.lon" ol-marker-properties="marker" ></ol-marker>
   </openlayers>
 
   <!-- suposed to trigger the ability to add a marker -->
 	<!-- ng-disabled="!isLoggedIn()" -->
-	<div ng-hide="isNotLoggedIn" layout=row flex>
+	<div ng-hide="isNotLoggedIn" layout=row>
 	<span flex></span>
+
 	<md-button id="icon" class="md-fab" aria-label="Add a Marker" data-ng-click="enableAddMarker=true; showSimpleToast();">
 		<md-tooltip>Add Marker</md-tooltip>
 		<md-icon md-svg-icon="../assets/images/icons/pluss.svg"></md-icon>
 	</md-button>
-	 <span flex="5"></span>
+	
+	<span flex="5"></span>
 	</div>
 </div>
