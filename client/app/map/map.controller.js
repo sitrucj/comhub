@@ -20,7 +20,7 @@ angular.module('comhubApp')
       clickedMarker: {}
 		});
 		
-	$scope.isNotLoggedIn = !(Auth.isLoggedIn);
+	$scope.isNotLoggedIn = !(Auth.isLoggedIn());
 	$scope.markers = null;
 	$scope.enableAddMarker = false;
   $scope.loginDialogShownOnce = false;

@@ -11,14 +11,8 @@
 
   <!-- suposed to trigger the ability to add a marker -->
 	<!-- ng-disabled="!isLoggedIn()" -->
-	<div ng-hide="isNotLoggedIn" layout=row>
-	<span flex></span>
-
-	<md-button id="icon" class="md-fab" aria-label="Add a Marker" data-ng-click="enableAddMarker=true; showSimpleToast();">
+	<md-button id="icon" class="md-fab md-fab-bottom-right" aria-label="Add a Marker" ng-disabled="isNotLoggedIn" data-ng-click="enableAddMarker=true; showSimpleToast();">
 		<md-tooltip>Add Marker</md-tooltip>
 		<md-icon md-svg-icon="../assets/images/icons/pluss.svg"></md-icon>
 	</md-button>
-	
-	<span flex="5"></span>
-	</div>
 </div>
